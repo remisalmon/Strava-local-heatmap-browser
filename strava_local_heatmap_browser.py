@@ -41,6 +41,10 @@ def main(args):
     heatmap_radius = args.radius
     heatmap_blur = args.blur
 
+    if not html_file[-5:] == '.html':
+        print('ERROR: output file must be .html')
+        quit()
+
     # parse GPX files
     gpx_files = glob.glob(gpx_dir+'/'+gpx_filter)
 
@@ -54,7 +58,7 @@ def main(args):
         print('reading '+gpx_file+'...')
 
         with open(gpx_file, 'r') as file:
-            for line in file: # 3x faster than gpxpy.parse(file)
+            for line in file:
                 if '<trkpt' in line:
                     tmp = re.findall('-?\d*\.?\d+', line)
 
@@ -95,7 +99,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = 'Generate a local heatmap from Strava GPX files', epilog = 'Report issues to https://github.com/remisalmon/strava-local-heatmap-browser')
     parser.add_argument('--gpx-dir', dest = 'dir', default = 'gpx', help = 'directory containing the GPX files (default: gpx)')
     parser.add_argument('--gpx-filter', dest = 'filter', default = '*.gpx', help = 'regex filter for the GPX files (default: *.gpx)')
-    parser.add_argument('--output', dest = 'output', default = 'Strava_local_heatmap.html', help = 'output HTML file (default: strava_local_heatmap.html)')
+    parser.add_argument('--output', dest = 'output', default = 'strava_local_heatmap.html', help = 'output HTML file (default: strava_local_heatmap.html)')
     parser.add_argument('--radius', dest = 'radius', type = int, default = 3, help = 'radius of trackpoints in pixels (default: 3)')
     parser.add_argument('--blur', dest = 'blur', type = int, default = 3, help = 'amount of blur in pixels (default: 3)')
 
