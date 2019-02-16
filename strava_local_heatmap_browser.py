@@ -24,14 +24,10 @@ import glob
 import re
 import webbrowser
 
-import folium
-import folium.plugins
+from folium import Map
+from folium.plugins import HeatMap
 
 # functions
-def rgb2hex(c):
-    hexc = '#%02x%02x%02x'%(int(c[0]*255), int(c[1]*255), int(c[2]*255))
-    return(hexc)
-
 def main(args):
     # arguments
     gpx_dir = args.dir
@@ -80,9 +76,9 @@ def main(args):
      1.0: '#fcfea4'}
 
     # create Folium map
-    fmap = folium.Map(tiles = 'CartoDB dark_matter')
+    fmap = Map(tiles = 'CartoDB dark_matter')
 
-    folium.plugins.HeatMap(heatmap_data, radius = heatmap_radius, blur = heatmap_blur, gradient = heatmap_grad).add_to(fmap)
+    HeatMap(heatmap_data, radius = heatmap_radius, blur = heatmap_blur, gradient = heatmap_grad).add_to(fmap)
 
     fmap.fit_bounds(fmap.get_bounds())
 
