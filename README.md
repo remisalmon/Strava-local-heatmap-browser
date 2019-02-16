@@ -8,8 +8,8 @@ Optimized for cycling :bicyclist: activities
 
 ## Features
 
-* Minimal Python dependencies (matplotlib/folium)
-* Fast (10s to parse 300000+ trackpoints on a i5-520M @ 2.4GHz, 3x faster than `gpxpy.parse()`)
+* Minimal Python dependencies (only requires [folium](https://github.com/python-visualization/folium))
+* Fast (3x faster than `gpxpy.parse()`)
 
 ## Usage
 
@@ -36,7 +36,5 @@ optional arguments:
 ## Python dependencies
 
 ```
-matplotlib >= 3.0.2
 folium >= 0.7.0
 ```
-

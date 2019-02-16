@@ -26,7 +26,6 @@ import webbrowser
 
 import folium
 import folium.plugins
-import matplotlib.cm as cm
 
 # functions
 def rgb2hex(c):
@@ -66,17 +65,19 @@ def main(args):
 
     print('read '+str(len(heatmap_data))+' trackpoints')
 
-    # get color map
-    cmap = cm.get_cmap('inferno')
-
-    # heatmap color gradient
-    heatmap_grad = {}
-
-    for i in range(10+1):
-        d = i/10
-        c = rgb2hex(cmap(d))
-
-        heatmap_grad[d] = c
+    # color map
+    heatmap_grad = \
+    {0.0: '#000003',
+     0.1: '#160b39',
+     0.2: '#410967',
+     0.3: '#6a176e',
+     0.4: '#932567',
+     0.5: '#bb3754',
+     0.6: '#dc5039',
+     0.7: '#f37719',
+     0.8: '#fba40a',
+     0.9: '#f5d745',
+     1.0: '#fcfea4'}
 
     # create Folium map
     fmap = folium.Map(tiles = 'CartoDB dark_matter')
