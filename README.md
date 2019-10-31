@@ -34,5 +34,5 @@ optional arguments:
 ## Python dependencies
 
 ```
-folium==0.7.0
+folium==0.10.0
 ```
