@@ -38,6 +38,7 @@ def main(args):
     html_file = args.output
     heatmap_radius = args.radius
     heatmap_blur = args.blur
+    heatmap_minimum_opacity = args.minimum_opacity
 
     if not html_file[-5:] == '.html':
         print('ERROR output file must be .html')
@@ -81,7 +82,7 @@ def main(args):
     # create Folium map
     fmap = Map(tiles = 'CartoDB dark_matter', prefer_canvas = True, max_zoom = HEATMAP_MAXZOOM)
 
-    HeatMap(heatmap_data, radius = heatmap_radius, blur = heatmap_blur, gradient = heatmap_grad, max_zoom = 19).add_to(fmap)
+    HeatMap(heatmap_data, radius = heatmap_radius, blur = heatmap_blur, gradient = heatmap_grad, max_zoom = 19, min_opacity = heatmap_minimum_opacity).add_to(fmap)
 
     fmap.fit_bounds(fmap.get_bounds())
 
@@ -102,6 +103,7 @@ if __name__ == '__main__':
     parser.add_argument('--gpx-filter', dest = 'filter', default = '*.gpx', help = 'glob filter for the GPX files (default: *.gpx)')
     parser.add_argument('--output', dest = 'output', default = 'strava_local_heatmap.html', help = 'output HTML file (default: strava_local_heatmap.html)')
     parser.add_argument('--radius', dest = 'radius', type = int, default = 3, help = 'radius of trackpoints in pixels (default: 3)')
+    parser.add_argument('--minimum-opacity', dest = 'minimum_opacity', type = float, default = .3, help = 'the minimum opacity value (default: 0.3)')
     parser.add_argument('--blur', dest = 'blur', type = int, default = 3, help = 'amount of blur in pixels (default: 3)')
 
     args = parser.parse_args()
