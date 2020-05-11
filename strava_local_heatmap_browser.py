@@ -30,81 +30,63 @@ from folium.plugins import HeatMap
 # constants
 HEATMAP_MAXZOOM = 16
 
+HEATMAP_GRAD = {0.0: '#000004',
+                0.1: '#160b39',
+                0.2: '#420a68',
+                0.3: '#6a176e',
+                0.4: '#932667',
+                0.5: '#bc3754',
+                0.6: '#dd513a',
+                0.7: '#f37819',
+                0.8: '#fca50a',
+                0.9: '#f6d746',
+                1.0: '#fcffa4'}
+
 # functions
 def main(args):
-    # arguments
-    gpx_dir = args.dir
-    gpx_filter = args.filter
-    html_file = args.output
-    heatmap_radius = args.radius
-    heatmap_blur = args.blur
-    heatmap_minimum_opacity = args.minimum_opacity
+    if not args.output[-5:] == '.html':
+        exit('ERROR Output file must be .html')
 
-    if not html_file[-5:] == '.html':
-        print('ERROR output file must be .html')
-        quit()
-
-    # parse GPX files
-    gpx_files = glob.glob(gpx_dir+'/'+gpx_filter)
+    gpx_files = glob.glob('{}/{}'.format(args.dir, args.filter))
 
     if not gpx_files:
-        print('ERROR no GPX files in '+gpx_dir)
-        quit()
+        exit('ERROR No GPX files in {}'.format(args.dir))
 
     heatmap_data = []
 
     for gpx_file in gpx_files:
-        print('reading '+gpx_file+'...')
+        print('Reading {}'.format(gpx_file))
 
         with open(gpx_file, 'r') as file:
             for line in file:
                 if '<trkpt' in line:
-                    tmp = re.findall('[-]?[0-9]*[.]?[0-9]+', line)
+                    r = re.findall('[-]?[0-9]*[.]?[0-9]+', line)
 
-                    heatmap_data.append([float(tmp[0]), float(tmp[1])])
+                    heatmap_data.append([float(r[0]), float(r[1])])
 
-    print('read '+str(len(heatmap_data))+' trackpoints')
+    print('Loaded {} trackpoints'.format(len(heatmap_data)))
 
-    # color map
-    heatmap_grad = \
-    {0.0: '#000004',
-     0.1: '#160b39',
-     0.2: '#420a68',
-     0.3: '#6a176e',
-     0.4: '#932667',
-     0.5: '#bc3754',
-     0.6: '#dd513a',
-     0.7: '#f37819',
-     0.8: '#fca50a',
-     0.9: '#f6d746',
-     1.0: '#fcffa4'}
-
-    # create Folium map
     fmap = Map(tiles = 'CartoDB dark_matter', prefer_canvas = True, max_zoom = HEATMAP_MAXZOOM)
 
-    HeatMap(heatmap_data, radius = heatmap_radius, blur = heatmap_blur, gradient = heatmap_grad, max_zoom = 19, min_opacity = heatmap_minimum_opacity).add_to(fmap)
+    HeatMap(heatmap_data, radius = args.radius, blur = args.blur, gradient = HEATMAP_GRAD, max_zoom = 19, min_opacity = args.min_opacity).add_to(fmap)
 
     fmap.fit_bounds(fmap.get_bounds())
 
-    # save map to HTML file and open with browser
-    print('writing '+html_file+'...')
+    fmap.save(args.output)
 
-    fmap.save(html_file)
+    print('Saved {}'.format(args.output))
 
-    webbrowser.open(html_file, new = 2, autoraise = True)
-
-    print('done')
+    webbrowser.open(args.output, new = 2, autoraise = True)
 
 if __name__ == '__main__':
-    # command line parameters
     parser = argparse.ArgumentParser(description = 'Generate a local heatmap from Strava GPX files', epilog = 'Report issues to https://github.com/remisalmon/strava-local-heatmap-browser')
 
     parser.add_argument('--gpx-dir', dest = 'dir', default = 'gpx', help = 'directory containing the GPX files (default: gpx)')
     parser.add_argument('--gpx-filter', dest = 'filter', default = '*.gpx', help = 'glob filter for the GPX files (default: *.gpx)')
     parser.add_argument('--output', dest = 'output', default = 'strava_local_heatmap.html', help = 'output HTML file (default: strava_local_heatmap.html)')
     parser.add_argument('--radius', dest = 'radius', type = int, default = 3, help = 'radius of trackpoints in pixels (default: 3)')
-    parser.add_argument('--minimum-opacity', dest = 'minimum_opacity', type = float, default = .3, help = 'the minimum opacity value (default: 0.3)')
     parser.add_argument('--blur', dest = 'blur', type = int, default = 3, help = 'amount of blur in pixels (default: 3)')
+    parser.add_argument('--min-opacity', dest = 'min_opacity', type = float, default = 0.3, help = 'minimum opacity value (default: 0.3)')
 
     args = parser.parse_args()
 
