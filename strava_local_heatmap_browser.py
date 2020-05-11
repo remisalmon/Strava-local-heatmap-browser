@@ -68,7 +68,7 @@ def main(args):
 
     fmap = Map(tiles = 'CartoDB dark_matter', prefer_canvas = True, max_zoom = HEATMAP_MAXZOOM)
 
-    HeatMap(heatmap_data, radius = args.radius, blur = args.blur, gradient = HEATMAP_GRAD, max_zoom = 19, min_opacity = args.min_opacity).add_to(fmap)
+    HeatMap(heatmap_data, radius = args.radius, blur = args.blur, gradient = HEATMAP_GRAD, min_opacity = args.min_opacity).add_to(fmap)
 
     fmap.fit_bounds(fmap.get_bounds())
 
@@ -84,8 +84,8 @@ if __name__ == '__main__':
     parser.add_argument('--gpx-dir', dest = 'dir', default = 'gpx', help = 'directory containing the GPX files (default: gpx)')
     parser.add_argument('--gpx-filter', dest = 'filter', default = '*.gpx', help = 'glob filter for the GPX files (default: *.gpx)')
     parser.add_argument('--output', dest = 'output', default = 'strava_local_heatmap.html', help = 'output HTML file (default: strava_local_heatmap.html)')
-    parser.add_argument('--radius', dest = 'radius', type = int, default = 3, help = 'radius of trackpoints in pixels (default: 3)')
-    parser.add_argument('--blur', dest = 'blur', type = int, default = 3, help = 'amount of blur in pixels (default: 3)')
+    parser.add_argument('--radius', dest = 'radius', type = int, default = 2, help = 'radius of trackpoints in pixels (default: 3)')
+    parser.add_argument('--blur', dest = 'blur', type = int, default = 1, help = 'amount of blur in pixels (default: 3)')
     parser.add_argument('--min-opacity', dest = 'min_opacity', type = float, default = 0.3, help = 'minimum opacity value (default: 0.3)')
 
     args = parser.parse_args()
