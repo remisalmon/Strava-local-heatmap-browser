@@ -20,7 +20,9 @@ Python script to reproduce the Strava Global Heatmap ([www.strava.com/heatmap](h
 ```
 usage: strava_local_heatmap_browser.py [-h] [--gpx-dir DIR]
                                        [--gpx-filter FILTER] [--output OUTPUT]
-                                       [--radius RADIUS] [--blur BLUR]
+                                       [--radius RADIUS]
+                                       [--minimum-opacity MINIMUM_OPACITY]
+                                       [--blur BLUR]
 
 optional arguments:
   -h, --help           show this help message and exit
@@ -28,6 +30,8 @@ optional arguments:
   --gpx-filter FILTER  glob filter for the GPX files (default: *.gpx)
   --output OUTPUT      output HTML file (default: strava_local_heatmap.html)
   --radius RADIUS      radius of trackpoints in pixels (default: 3)
+  --minimum-opacity MINIMUM_OPACITY
+                       the minimum opacity value (default: 0.3)
   --blur BLUR          amount of blur in pixels (default: 3)
 ```
 
