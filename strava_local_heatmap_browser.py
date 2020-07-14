@@ -55,7 +55,8 @@ def main(args):
     heatmap_data = []
 
     for gpx_file in gpx_files:
-        print('Reading {}'.format(gpx_file))
+        if not args.quiet:
+            print('Reading {}'.format(gpx_file))
 
         with open(gpx_file, 'r') as file:
             for line in file:
@@ -64,7 +65,8 @@ def main(args):
 
                     heatmap_data.append([float(r[0]), float(r[1])])
 
-    print('Loaded {} trackpoints'.format(len(heatmap_data)))
+    if not args.quiet:
+        print('Loaded {} trackpoints'.format(len(heatmap_data)))
 
     fmap = Map(tiles = 'CartoDB dark_matter', prefer_canvas = True, max_zoom = HEATMAP_MAXZOOM)
 
@@ -74,7 +76,8 @@ def main(args):
 
     fmap.save(args.output)
 
-    print('Saved {}'.format(args.output))
+    if not args.quiet:
+        print('Saved {}'.format(args.output))
 
     webbrowser.open(args.output, new = 2, autoraise = True)
 
@@ -88,6 +91,7 @@ if __name__ == '__main__':
     parser.add_argument('--blur', dest = 'blur', type = int, default = 1, help = 'amount of blur in pixels (default: 3)')
     parser.add_argument('--min-opacity', dest = 'min_opacity', type = float, default = 0.3, help = 'minimum opacity value (default: 0.3)')
     parser.add_argument('--max-val', dest = 'max_val', type = float, default = 1.0, help = 'maximum point intensity (default: 1.0)')
+    parser.add_argument('--quiet', default = False, action = 'store_true', help = 'quiet output')
 
     args = parser.parse_args()
 
