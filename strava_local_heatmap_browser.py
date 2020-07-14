@@ -68,7 +68,7 @@ def main(args):
 
     fmap = Map(tiles = 'CartoDB dark_matter', prefer_canvas = True, max_zoom = HEATMAP_MAXZOOM)
 
-    HeatMap(heatmap_data, radius = args.radius, blur = args.blur, gradient = HEATMAP_GRAD, min_opacity = args.min_opacity).add_to(fmap)
+    HeatMap(heatmap_data, radius = args.radius, blur = args.blur, gradient = HEATMAP_GRAD, min_opacity = args.min_opacity, max_val = args.max_val).add_to(fmap)
 
     fmap.fit_bounds(fmap.get_bounds())
 
@@ -87,6 +87,7 @@ if __name__ == '__main__':
     parser.add_argument('--radius', dest = 'radius', type = int, default = 2, help = 'radius of trackpoints in pixels (default: 3)')
     parser.add_argument('--blur', dest = 'blur', type = int, default = 1, help = 'amount of blur in pixels (default: 3)')
     parser.add_argument('--min-opacity', dest = 'min_opacity', type = float, default = 0.3, help = 'minimum opacity value (default: 0.3)')
+    parser.add_argument('--max-val', dest = 'max_val', type = float, default = 1.0, help = 'maximum point intensity (default: 1.0)')
 
     args = parser.parse_args()
 
