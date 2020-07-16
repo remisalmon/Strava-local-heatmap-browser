@@ -62,8 +62,13 @@ def main(args):
             print('Reading {}'.format(gpx_file))
 
         with open(gpx_file, 'r') as file:
+            index = -1
             for line in file:
                 if '<trkpt' in line:
+                    index += 1
+                    if index % args.skip_ratio > 0:
+                        continue
+
                     r = re.findall('[-]?[0-9]*[.]?[0-9]+', line)
 
                     heatmap_data.append([float(r[0]), float(r[1])])
@@ -96,6 +101,7 @@ if __name__ == '__main__':
     parser.add_argument('--max-val', dest = 'max_val', type = float, default = 1.0, help = 'maximum point intensity (default: 1.0)')
     parser.add_argument('--orange', dest = 'gradient', action='store_const', const='orange', default = 'orange', help = 'use the orange gradient (this is the default)')
     parser.add_argument('--blue-red', dest = 'gradient', action='store_const', const='blue-red', help = 'use the blue to green to red gradient')
+    parser.add_argument('--skip-ratio', dest = 'skip_ratio', type = int, default = 1, help = 'skip input points.  ex. skip-ratio = 2 means use every-other point.  (default: 1)')
     parser.add_argument('--quiet', default = False, action = 'store_true', help = 'quiet output')
 
     args = parser.parse_args()

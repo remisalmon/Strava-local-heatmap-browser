@@ -21,8 +21,8 @@ usage: strava_local_heatmap_browser.py [-h] [--gpx-dir DIR]
                                        [--radius RADIUS] [--blur BLUR]
                                        [--min-opacity MIN_OPACITY]
                                        [--max-val MAX_VAL] [--orange]
-                                       [--blue-red] [--quiet]
-
+                                       [--blue-red] [--skip-ratio SKIP_RATIO]
+                                       [--quiet]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -36,6 +36,9 @@ optional arguments:
   --max-val MAX_VAL     maximum point intensity (default: 1.0)
   --orange              use the orange gradient (this is the default)
   --blue-red            use the blue to green to red gradient
+  --skip-ratio SKIP_RATIO
+                        skip input points. ex. skip-ratio = 2 means use every-
+                        other point. (default: 1)
   --quiet               quiet output
 
 ```
