@@ -30,7 +30,8 @@ from folium.plugins import HeatMap
 # constants
 HEATMAP_MAXZOOM = 16
 
-HEATMAP_GRAD = {0.0: '#000004',
+HEATMAP_GRAD = {'orange':
+                {0.0: '#000004',
                 0.1: '#160b39',
                 0.2: '#420a68',
                 0.3: '#6a176e',
@@ -40,7 +41,9 @@ HEATMAP_GRAD = {0.0: '#000004',
                 0.7: '#f37819',
                 0.8: '#fca50a',
                 0.9: '#f6d746',
-                1.0: '#fcffa4'}
+                1.0: '#fcffa4'},
+                'blue-red': {0.3: 'blue', 0.7: 'lime', 1: 'red'}
+}
 
 # functions
 def main(args):
@@ -70,7 +73,7 @@ def main(args):
 
     fmap = Map(tiles = 'CartoDB dark_matter', prefer_canvas = True, max_zoom = HEATMAP_MAXZOOM)
 
-    HeatMap(heatmap_data, radius = args.radius, blur = args.blur, gradient = HEATMAP_GRAD, min_opacity = args.min_opacity, max_val = args.max_val).add_to(fmap)
+    HeatMap(heatmap_data, radius = args.radius, blur = args.blur, gradient = HEATMAP_GRAD[args.gradient], min_opacity = args.min_opacity, max_val = args.max_val).add_to(fmap)
 
     fmap.fit_bounds(fmap.get_bounds())
 
@@ -91,6 +94,8 @@ if __name__ == '__main__':
     parser.add_argument('--blur', dest = 'blur', type = int, default = 1, help = 'amount of blur in pixels (default: 3)')
     parser.add_argument('--min-opacity', dest = 'min_opacity', type = float, default = 0.3, help = 'minimum opacity value (default: 0.3)')
     parser.add_argument('--max-val', dest = 'max_val', type = float, default = 1.0, help = 'maximum point intensity (default: 1.0)')
+    parser.add_argument('--orange', dest = 'gradient', action='store_const', const='orange', default = 'orange', help = 'use the orange gradient (this is the default)')
+    parser.add_argument('--blue-red', dest = 'gradient', action='store_const', const='blue-red', help = 'use the blue to green to red gradient')
     parser.add_argument('--quiet', default = False, action = 'store_true', help = 'quiet output')
 
     args = parser.parse_args()
