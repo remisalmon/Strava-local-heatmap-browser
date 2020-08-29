@@ -20,6 +20,9 @@ usage: strava_local_heatmap_browser.py [-h] [--gpx-dir DIR]
                                        [--gpx-filter FILTER] [--output OUTPUT]
                                        [--radius RADIUS] [--blur BLUR]
                                        [--min-opacity MIN_OPACITY]
+                                       [--max-val MAX_VAL] [--orange]
+                                       [--blue-red] [--skip-ratio SKIP_RATIO]
+                                       [--quiet]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -30,6 +33,14 @@ optional arguments:
   --blur BLUR           amount of blur in pixels (default: 3)
   --min-opacity MIN_OPACITY
                         minimum opacity value (default: 0.3)
+  --max-val MAX_VAL     maximum point intensity (default: 1.0)
+  --orange              use the orange gradient (this is the default)
+  --blue-red            use the blue to green to red gradient
+  --skip-ratio SKIP_RATIO
+                        skip input points. ex. skip-ratio = 2 means use every-
+                        other point. (default: 1)
+  --quiet               quiet output
+
 ```
 
 ## Python dependencies
