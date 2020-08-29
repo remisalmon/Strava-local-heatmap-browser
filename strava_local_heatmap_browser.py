@@ -50,10 +50,10 @@ def main(args):
     if not args.output[-5:] == '.html':
         exit('ERROR Output file must be .html')
 
-    gpx_files = glob.glob('{}/{}'.format(args.dir, args.filter))
+    gpx_files = glob.glob('{}/{}'.format(args.gpx_dir, args.gpx_filter))
 
     if not gpx_files:
-        exit('ERROR No GPX files in {}'.format(args.dir))
+        exit('ERROR No GPX files in {}'.format(args.gpx_dir))
 
     heatmap_data = []
 
@@ -90,18 +90,18 @@ def main(args):
     webbrowser.open(args.output, new = 2, autoraise = True)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description = 'Generate a local heatmap from Strava GPX files', epilog = 'Report issues to https://github.com/remisalmon/strava-local-heatmap-browser')
+    parser = argparse.ArgumentParser(description = 'Generate a local heatmap from Strava GPX files', epilog = 'Report issues to github.com/remisalmon/strava-local-heatmap-browser')
 
-    parser.add_argument('--gpx-dir', dest = 'dir', default = 'gpx', help = 'directory containing the GPX files (default: gpx)')
-    parser.add_argument('--gpx-filter', dest = 'filter', default = '*.gpx', help = 'glob filter for the GPX files (default: *.gpx)')
-    parser.add_argument('--output', dest = 'output', default = 'strava_local_heatmap.html', help = 'output HTML file (default: strava_local_heatmap.html)')
-    parser.add_argument('--radius', dest = 'radius', type = int, default = 2, help = 'radius of trackpoints in pixels (default: 3)')
-    parser.add_argument('--blur', dest = 'blur', type = int, default = 1, help = 'amount of blur in pixels (default: 3)')
-    parser.add_argument('--min-opacity', dest = 'min_opacity', type = float, default = 0.3, help = 'minimum opacity value (default: 0.3)')
-    parser.add_argument('--max-val', dest = 'max_val', type = float, default = 1.0, help = 'maximum point intensity (default: 1.0)')
+    parser.add_argument('--gpx-dir', metavar = 'DIR', default = 'gpx', help = 'directory containing the GPX files (default: gpx)')
+    parser.add_argument('--gpx-filter', metavar = 'FILTER', default = '*.gpx', help = 'glob filter for the GPX files (default: *.gpx)')
+    parser.add_argument('--output', metavar = 'FILE', default = 'strava_local_heatmap.html', help = 'output html file (default: strava_local_heatmap.html)')
+    parser.add_argument('--radius', type = int, default = 2, help = 'radius of trackpoints in pixels (default: 3)')
+    parser.add_argument('--blur', type = int, default = 1, help = 'amount of blur in pixels (default: 3)')
+    parser.add_argument('--min-opacity', metavar = 'OPACITY', type = float, default = 0.3, help = 'minimum opacity value (default: 0.3)')
+    parser.add_argument('--max-val', metavar = 'VAL', type = float, default = 1.0, help = 'maximum point intensity (default: 1.0)')
     parser.add_argument('--orange', dest = 'gradient', action='store_const', const='orange', default = 'orange', help = 'use the orange gradient (this is the default)')
     parser.add_argument('--blue-red', dest = 'gradient', action='store_const', const='blue-red', help = 'use the blue to green to red gradient')
-    parser.add_argument('--skip-ratio', dest = 'skip_ratio', type = int, default = 1, help = 'skip input points.  ex. skip-ratio = 2 means use every-other point.  (default: 1)')
+    parser.add_argument('--skip-ratio', metavar = 'N', type = int, default = 1, help = 'read every other N point of each GPX file (default: 1)')
     parser.add_argument('--quiet', default = False, action = 'store_true', help = 'quiet output')
 
     args = parser.parse_args()
