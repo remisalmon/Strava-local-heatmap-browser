@@ -62,19 +62,19 @@ def main(args):
             print('Reading {}'.format(gpx_file))
 
         with open(gpx_file, 'r') as file:
-            index = -1
             for line in file:
                 if '<trkpt' in line:
-                    index += 1
-                    if index % args.skip_ratio > 0:
-                        continue
-
                     r = re.findall('[-]?[0-9]*[.]?[0-9]+', line)
 
                     heatmap_data.append([float(r[0]), float(r[1])])
 
     if not args.quiet:
         print('Loaded {} trackpoints'.format(len(heatmap_data)))
+
+    if args.skip_ratio > 1:
+        heatmap_data = heatmap_data[::args.skip_ratio]
+
+        print('Reduced to {} trackpoints'.format(len(heatmap_data)))
 
     fmap = Map(tiles = 'CartoDB dark_matter', prefer_canvas = True, max_zoom = HEATMAP_MAXZOOM)
 
