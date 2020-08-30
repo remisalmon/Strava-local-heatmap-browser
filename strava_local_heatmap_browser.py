@@ -30,20 +30,28 @@ from folium.plugins import HeatMap
 # constants
 HEATMAP_MAXZOOM = 16
 
-HEATMAP_GRAD = {'orange':
-                {0.0: '#000004',
-                0.1: '#160b39',
-                0.2: '#420a68',
-                0.3: '#6a176e',
-                0.4: '#932667',
-                0.5: '#bc3754',
-                0.6: '#dd513a',
-                0.7: '#f37819',
-                0.8: '#fca50a',
-                0.9: '#f6d746',
-                1.0: '#fcffa4'},
-                'blue-red': {0.3: 'blue', 0.7: 'lime', 1: 'red'}
-}
+HEATMAP_GRAD = {'dark':{0.0: '#000004',
+                        0.1: '#160b39',
+                        0.2: '#420a68',
+                        0.3: '#6a176e',
+                        0.4: '#932667',
+                        0.5: '#bc3754',
+                        0.6: '#dd513a',
+                        0.7: '#f37819',
+                        0.8: '#fca50a',
+                        0.9: '#f6d746',
+                        1.0: '#fcffa4'},
+                 'light':{0.0: '#3b4cc0',
+                          0.1: '#5977e3',
+                          0.2: '#7b9ff9',
+                          0.3: '#9ebeff',
+                          0.4: '#c0d4f5',
+                          0.5: '#dddcdc',
+                          0.6: '#f2cbb7',
+                          0.7: '#f7ac8e',
+                          0.8: '#ee8468',
+                          0.9: '#d65244',
+                          1.0: '#b40426'}}
 
 # functions
 def main(args):
@@ -76,9 +84,16 @@ def main(args):
 
         print('Reduced to {} trackpoints'.format(len(heatmap_data)))
 
-    fmap = Map(tiles = 'CartoDB dark_matter', prefer_canvas = True, max_zoom = HEATMAP_MAXZOOM)
+    fmap = Map(tiles = 'CartoDB positron' if args.light_map else 'CartoDB dark_matter',
+               prefer_canvas = True,
+               max_zoom = HEATMAP_MAXZOOM)
 
-    HeatMap(heatmap_data, radius = args.radius, blur = args.blur, gradient = HEATMAP_GRAD[args.gradient], min_opacity = args.min_opacity, max_val = args.max_val).add_to(fmap)
+    HeatMap(heatmap_data,
+            radius = args.radius,
+            blur = args.blur,
+            gradient = HEATMAP_GRAD['light' if args.light_map else 'dark'],
+            min_opacity = args.min_opacity,
+            max_val = args.max_val).add_to(fmap)
 
     fmap.fit_bounds(fmap.get_bounds())
 
@@ -94,14 +109,13 @@ if __name__ == '__main__':
 
     parser.add_argument('--gpx-dir', metavar = 'DIR', default = 'gpx', help = 'directory containing the GPX files (default: gpx)')
     parser.add_argument('--gpx-filter', metavar = 'FILTER', default = '*.gpx', help = 'glob filter for the GPX files (default: *.gpx)')
+    parser.add_argument('--skip-ratio', metavar = 'N', type = int, default = 1, help = 'read every other N point of each GPX file (default: 1)')
+    parser.add_argument('--light-map', action='store_true', help = 'use light map background')
     parser.add_argument('--output', metavar = 'FILE', default = 'strava_local_heatmap.html', help = 'output html file (default: strava_local_heatmap.html)')
-    parser.add_argument('--radius', type = int, default = 2, help = 'radius of trackpoints in pixels (default: 3)')
-    parser.add_argument('--blur', type = int, default = 1, help = 'amount of blur in pixels (default: 3)')
+    parser.add_argument('--radius', type = int, default = 2, help = 'radius of trackpoints in pixels (default: 2)')
+    parser.add_argument('--blur', type = int, default = 2, help = 'amount of blur in pixels (default: 2)')
     parser.add_argument('--min-opacity', metavar = 'OPACITY', type = float, default = 0.3, help = 'minimum opacity value (default: 0.3)')
     parser.add_argument('--max-val', metavar = 'VAL', type = float, default = 1.0, help = 'maximum point intensity (default: 1.0)')
-    parser.add_argument('--orange', dest = 'gradient', action='store_const', const='orange', default = 'orange', help = 'use the orange gradient (this is the default)')
-    parser.add_argument('--blue-red', dest = 'gradient', action='store_const', const='blue-red', help = 'use the blue to green to red gradient')
-    parser.add_argument('--skip-ratio', metavar = 'N', type = int, default = 1, help = 'read every other N point of each GPX file (default: 1)')
     parser.add_argument('--quiet', default = False, action = 'store_true', help = 'quiet output')
 
     args = parser.parse_args()
