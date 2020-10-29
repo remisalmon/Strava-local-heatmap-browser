@@ -36,6 +36,8 @@ optional arguments:
 ```
 
 ## Python dependencies
-```
-folium
-```
+* folium
+
+### Setup
+
+* `pip3 install --user --requirement requirements.txt`
