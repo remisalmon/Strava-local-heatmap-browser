@@ -56,11 +56,12 @@ HEATMAP_GRAD = {'dark':{0.0: '#000004',
 def get_gpx_files(args):
     gpx_filters = args.gpx_filters if args.gpx_filters else ['*.gpx']
     gpx_files = []
+
     for filter in gpx_filters:
         gpx_files += glob.glob('{}/{}'.format(args.gpx_dir, filter))
-    
+
     if not gpx_files:
-        exit('ERROR No GPX files in {}'.format(args.gpx_dir))
+        exit('ERROR No GPX files found')
 
     return gpx_files
 
@@ -114,7 +115,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = 'Generate a local heatmap from Strava GPX files', epilog = 'Report issues to github.com/remisalmon/strava-local-heatmap-browser')
 
     parser.add_argument('--gpx-dir', metavar = 'DIR', default = 'gpx', help = 'directory containing the GPX files (default: gpx)')
-    parser.add_argument('--gpx-filter', dest='gpx_filters', metavar = 'FILTER', action = 'append', help = 'glob filter for the GPX files (default: *.gpx)')
+    parser.add_argument('--gpx-filters', metavar = 'FILTERS', action = 'append', help = 'glob filter(s) for the GPX files (default: *.gpx)')
     parser.add_argument('--skip-ratio', metavar = 'N', type = int, default = 1, help = 'read every other N point of each GPX file (default: 1)')
     parser.add_argument('--light-map', action='store_true', help = 'use light map background')
     parser.add_argument('--output', metavar = 'FILE', default = 'strava_local_heatmap.html', help = 'output html file (default: strava_local_heatmap.html)')

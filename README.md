@@ -5,7 +5,7 @@ Python script to reproduce the Strava Global Heatmap ([www.strava.com/heatmap](h
 
 ## Features
 
-* Minimal Python dependencies ([folium](https://github.com/python-visualization/folium))
+* Minimal Python dependencies
 * Fast (3x faster than `gpxpy.parse()`)
 
 ## Usage
@@ -23,7 +23,7 @@ usage: strava_local_heatmap_browser.py [-h] [--gpx-dir DIR] [--gpx-filter FILTER
 optional arguments:
   -h, --help            show this help message and exit
   --gpx-dir DIR         directory containing the GPX files (default: gpx)
-  --gpx-filter FILTER   glob filter for the GPX files (default: *.gpx)
+  --gpx-filters FILTERS glob filter(s) for the GPX files (default: *.gpx)
   --skip-ratio N        read every other N point of each GPX file (default: 1)
   --light-map           use light map background
   --output FILE         output html file (default: strava_local_heatmap.html)
@@ -36,7 +36,7 @@ optional arguments:
 ```
 
 ## Python dependencies
-* folium
+* [folium](https://github.com/python-visualization/folium)
 
 ### Setup
 
