@@ -38,6 +38,6 @@ optional arguments:
 ## Python dependencies
 * [folium](https://github.com/python-visualization/folium)
 
-### Setup
+## See also
 
-* `pip3 install --user --requirement requirements.txt`
+https://github.com/arichnad/heatmap-geojson to produce a heatmap in GeoJSON format from GPX files
